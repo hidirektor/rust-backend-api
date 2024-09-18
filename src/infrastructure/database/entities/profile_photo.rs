@@ -1,7 +1,7 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
-#[sea_orm(table_name = "profile_photo")]
+#[sea_orm(table_name = "ProfilePhoto")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
@@ -16,7 +16,7 @@ pub enum Relation {}
 
 impl RelationTrait for Relation {
     fn def(&self) -> RelationDef {
-        panic!("No relations defined") // No relations exist for this entity
+        panic!("No relations defined") // Empty relation definition
     }
 }
 

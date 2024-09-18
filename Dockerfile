@@ -1,4 +1,20 @@
-FROM ubuntu:latest
-LABEL authors="hidirektor"
+FROM rust:1.69 as builder
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /app
+
+COPY Cargo.toml Cargo.lock ./
+RUN cargo build --release
+
+COPY src ./src
+
+RUN cargo build --release
+
+FROM debian:buster-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/target/release/your_app_name .
+
+EXPOSE 2805
+
+CMD ["./simple-backend-api"]

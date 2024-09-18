@@ -2,7 +2,7 @@ mod domain;
 mod infrastructure;
 mod interface;
 
-use sea_orm_migration::MigratorTrait;
+use sea_orm_migration::sea_orm::DatabaseConnection;
 use migration::{Migrator, MigratorTrait};
 use actix_web::{web, App, HttpServer};
 use infrastructure::config::DBConfig;
@@ -17,9 +17,11 @@ async fn main() -> std::io::Result<()> {
 
     // Veritabanı bağlantısı
     let db = database::connect(&config.database_url).await;
+    //let migration_db = migration::sea_orm::Database::connect(&config.database_url).await
+        //.expect("Failed to connect to the migration database");
 
     // Migrasyonları çalıştır
-    Migrator::up(&db, None).await.expect("Migrasyonlar başarısız oldu");
+    //Migrator::up(&migration_db, None).await.expect("Migrasyonlar başarısız oldu");
 
     // Redis bağlantısı
     let redis_client = cache::redis_client::connect(&config.redis_url);
