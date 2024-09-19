@@ -2,12 +2,12 @@ mod domain;
 mod infrastructure;
 mod interface;
 
-use sea_orm_migration::sea_orm::DatabaseConnection;
-use migration::{Migrator, MigratorTrait};
 use actix_web::{web, App, HttpServer};
+use domain::migration::Migrator;
 use infrastructure::config::DBConfig;
-use infrastructure::{cache, database, mailer, messaging, storage};
+use infrastructure::{cache, database, mailer, messaging};
 use interface::routes::configure;
+use sea_orm_migration::MigratorTrait;
 use std::sync::Arc;
 
 #[actix_web::main]
@@ -17,11 +17,11 @@ async fn main() -> std::io::Result<()> {
 
     // Veritabanı bağlantısı
     let db = database::connect(&config.database_url).await;
-    //let migration_db = migration::sea_orm::Database::connect(&config.database_url).await
-        //.expect("Failed to connect to the migration database");
 
     // Migrasyonları çalıştır
-    //Migrator::up(&migration_db, None).await.expect("Migrasyonlar başarısız oldu");
+    if let Err(err) = Migrator::up(&db, None).await {
+        eprintln!("Migration failed: {:?}", err);
+    }
 
     // Redis bağlantısı
     let redis_client = cache::redis_client::connect(&config.redis_url);

@@ -22,4 +22,3 @@ lettre = "0.11.9"
 reqwest = { version = "0.12.7", features = ["json", "multipart", "default-tls"] }
 sea-orm-migration = { version = "0.11", features = ["sqlx-mysql"] }
 sqlx = { version = "0.7", features = ["mysql", "runtime-tokio-native-tls"] }
-migration = { path = "./migration" }
